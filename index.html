@@ -136,14 +136,13 @@
             display: inline-flex; /* Changed to inline-flex to center SVG content */
             align-items: center;
             justify-content: center;
-            width: 2.8rem; /* Back to original size */
-            height: 2.8rem; /* Back to original size */
+            width: 2.5rem; /* Slightly smaller default size for better fit */
+            height: 2.5rem; /* Slightly smaller default size for better fit */
             text-align: center;
             color: #1e40af; /* Original blue color for all numbers */
             transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth transition for hover effects */
             cursor: default; /* No longer clickable */
-            /* Explicit font size for text characters to match SVG sizing */
-            font-size: 1.3rem; /* Back to original size */
+            font-size: 1.1rem; /* Adjusted font size */
         }
         .number-cell:hover {
             transform: scale(1); /* No scale on hover as lines are now automatic */
@@ -155,6 +154,14 @@
             display: block; /* Ensure SVG is block level inside flex container */
             /* The fill for SVG paths will be set to 'currentColor' in JS,
                so it inherits the text color of the parent .number-cell */
+        }
+        /* Responsive adjustments for number-cell on small screens */
+        @media (max-width: 640px) { /* Tailwind's 'sm' breakpoint is 640px */
+            .number-cell {
+                width: 2.2rem; /* Even smaller on very small screens */
+                height: 2.2rem;
+                font-size: 1rem; /* Smaller font size */
+            }
         }
         /* Specific style for download button to override general button-style for its background */
         #downloadBtn {
@@ -263,9 +270,12 @@
         /* Style for the container of number cells, needed for proper positioning */
         .number-row-container {
             display: flex;
-            justify-content: space-around;
-            /* Removed margin-bottom to rely on parent's gap */
-            height: 2.8rem; /* Reduced height for rows */
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+            justify-content: center; /* Center items in the row */
+            gap: 0.25rem; /* Small gap between cells */
+            padding-top: 0.25rem; /* Add some vertical padding */
+            padding-bottom: 0.25rem; /* Add some vertical padding */
+            /* Removed fixed height to allow wrapping to increase height */
             align-items: center; /* Center items vertically */
         }
         /* Adjust hr margin to compensate for new row container margin */
@@ -662,7 +672,8 @@
             </div>
 
             <!-- New display boxes for current time, day, and month -->
-            <div class="flex justify-center mt-4 mb-6" id="jataYeamDateTimeDisplay">
+            <!-- MODIFIED: Added flex-col for mobile stacking and sm:flex-row for larger screens -->
+            <div class="flex flex-col sm:flex-row justify-center mt-4 mb-6" id="jataYeamDateTimeDisplay">
                 <div class="current-data-box">
                     <div class="label">ម៉ោងបច្ចុចុប្បន្ន</div>
                     <div class="value" id="currentTimeDisplay">--:--</div>
@@ -1542,10 +1553,12 @@
             // Helper function to append row to DOM
             const appendRow = (elements, parentElement) => {
                 const rowContainer = document.createElement('div');
-                rowContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-center'); // Removed mb-2
+                // The 'flex-col' and 'items-center' are removed from here, as the 'number-row-container'
+                // class now handles its own flex properties including 'flex-wrap' for responsiveness.
+                // rowContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-center');
 
                 const div = document.createElement('div');
-                div.classList.add('number-row-container');
+                div.classList.add('number-row-container'); // This class now has flex-wrap, justify-center, gap, padding
                 elements.forEach(el => div.appendChild(el));
                 rowContainer.appendChild(div);
                 
