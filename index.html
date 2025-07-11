@@ -131,18 +131,31 @@
         .hidden {
             display: none;
         }
+        /* Style for the container of number cells, needed for proper positioning */
+        .number-row-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap */
+            justify-content: center; /* Center items in the row */
+            gap: 0.25rem; /* Small gap between cells */
+            padding: 0.25rem 0; /* Add some vertical padding */
+            align-items: center; /* Center items vertically */
+            width: 100%; /* Ensure it takes full width to allow wrapping */
+        }
         /* Custom class for fixed-width number display */
         .number-cell {
-            display: inline-flex; /* Changed to inline-flex to center SVG content */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2.5rem; /* Slightly smaller default size for better fit */
-            height: 2.5rem; /* Slightly smaller default size for better fit */
+            /* Use a flexible width, e.g., calc() or vw, and maintain aspect ratio */
+            width: calc(100% / 7 - 0.5rem); /* Distribute across 7 columns, accounting for gap */
+            max-width: 2.5rem; /* Max size for larger screens (e.g., desktop) */
+            min-width: 1.8rem; /* Minimum size for very small screens (e.g., mobile) */
+            aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
             text-align: center;
             color: #1e40af; /* Original blue color for all numbers */
             transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth transition for hover effects */
             cursor: default; /* No longer clickable */
-            font-size: 1.1rem; /* Adjusted font size */
+            font-size: clamp(0.8rem, 3vw, 1.1rem); /* Responsive font size */
         }
         .number-cell:hover {
             transform: scale(1); /* No scale on hover as lines are now automatic */
@@ -155,14 +168,13 @@
             /* The fill for SVG paths will be set to 'currentColor' in JS,
                so it inherits the text color of the parent .number-cell */
         }
-        /* Responsive adjustments for number-cell on small screens */
-        @media (max-width: 640px) { /* Tailwind's 'sm' breakpoint is 640px */
-            .number-cell {
-                width: 2.2rem; /* Even smaller on very small screens */
-                height: 2.2rem;
-                font-size: 1rem; /* Smaller font size */
-            }
+        /* Adjust hr margin to compensate for new row container margin */
+        hr {
+            margin-top: 0.03125rem; /* Reduced from 0.0625rem to 0.03125rem (0.5px) */
+            margin-bottom: 0.03125rem; /* Reduced from 0.0625rem to 0.03125rem (0.5px) */
+            border-width: 1px; /* Slightly thinner border */
         }
+
         /* Specific style for download button to override general button-style for its background */
         #downloadBtn {
             background-image: linear-gradient(to right, #10b981, #059669); /* Green gradient */
@@ -267,24 +279,7 @@
             background: transparent; /* Make canvas background transparent */
             display: block; /* Always visible to occupy space, clear for drawing */
         }
-        /* Style for the container of number cells, needed for proper positioning */
-        .number-row-container {
-            display: flex;
-            flex-wrap: wrap; /* Allow items to wrap to the next line */
-            justify-content: center; /* Center items in the row */
-            gap: 0.25rem; /* Small gap between cells */
-            padding-top: 0.25rem; /* Add some vertical padding */
-            padding-bottom: 0.25rem; /* Add some vertical padding */
-            /* Removed fixed height to allow wrapping to increase height */
-            align-items: center; /* Center items vertically */
-        }
-        /* Adjust hr margin to compensate for new row container margin */
-        hr {
-            margin-top: 0.03125rem; /* Reduced from 0.0625rem to 0.03125rem (0.5px) */
-            margin-bottom: 0.03125rem; /* Reduced from 0.0625rem to 0.03125rem (0.5px) */
-            border-width: 1px; /* Slightly thinner border */
-        }
-
+        
         /* Styles for the new plus button and dropdown */
         .dropdown-container {
             position: absolute;
